@@ -19,7 +19,7 @@ var Pivot4Sprite
 var ccwPivot
 var cwPivot
 
-func rotatePlayer():
+func changeStickyDirection():
 	spriteSticky.rotation = (rotationState*PI/2)
 	
 	if(rotationState == 0):
@@ -38,6 +38,21 @@ func rotatePlayer():
 		ccwPivot = Pivot3Sprite
 		cwPivot = Pivot1Sprite
 	
+
+func rotatePlayer(direction: String, angle):
+	memeAux = 16
+	rotation_around_point = angle
+	
+	if(direction == "CCW"):
+		point = ccwPivot.global_position
+		memes = -1
+	elif(direction == "CW"):
+		point = cwPivot.global_position
+		memes = 1
+	else:
+		print("Direção de Giro Inválida?")
+	
+
 func setPivots():
 	pass
 
@@ -51,70 +66,44 @@ func _input(event):
 	
 	
 	
-	if event.is_action_pressed("ui_left"):
-		if(isShiftHeld):
-			rotationState = 3
-			rotatePlayer()
-		else:
-			if(memeAux == 0):
+	if(memeAux == 0):	
+		if event.is_action_pressed("ui_left"):
+			if(isShiftHeld):
+				rotationState = 3
+				changeStickyDirection()
+			else:
 				if(rotationState == 2):
-					memeAux = 16
-					point = cwPivot.global_position
-					rotation_around_point = (+cwPivot.position).angle()
-					memes = 1
+					rotatePlayer("CW", (+cwPivot.position).angle())
 				elif(rotationState == 0):
-					memeAux = 16
-					point = ccwPivot.global_position
-					rotation_around_point = (-ccwPivot.position).angle()
-					memes = -1
-	elif event.is_action_pressed("ui_right"):
-		if(isShiftHeld):
-			rotationState = 1
-			rotatePlayer()
-		else:
-			if(memeAux == 0):
+					rotatePlayer("CCW", (-ccwPivot.position).angle())
+		elif event.is_action_pressed("ui_right"):
+			if(isShiftHeld):
+				rotationState = 1
+				changeStickyDirection()
+			else:
 				if(rotationState == 2):
-					memeAux = 16
-					point = ccwPivot.global_position
-					rotation_around_point = (-ccwPivot.position).angle()
-					memes = -1
+					rotatePlayer("CCW", (-ccwPivot.position).angle())
 				elif(rotationState == 0):
-					memeAux = 16
-					point = cwPivot.global_position
-					rotation_around_point = (+cwPivot.position).angle()
-					memes = 1
-	elif event.is_action_pressed("ui_up"):
-		if(isShiftHeld):
-			rotationState = 0
-			rotatePlayer()
-		else:
-			if(memeAux == 0):
+					rotatePlayer("CW", (+cwPivot.position).angle())
+		elif event.is_action_pressed("ui_up"):
+			if(isShiftHeld):
+				rotationState = 0
+				changeStickyDirection()
+			else:
 				if(rotationState == 1):
-					memeAux = 16
-					point = ccwPivot.global_position
-					rotation_around_point = (+ccwPivot.position).angle()
-					memes = -1
+					rotatePlayer("CCW", (+ccwPivot.position).angle())
 				elif(rotationState == 3):
-					memeAux = 16
-					point = cwPivot.global_position
-					rotation_around_point = (-cwPivot.position).angle()
-					memes = 1
-	elif event.is_action_pressed("ui_down"):
-		if(isShiftHeld):
-			rotationState = 2
-			rotatePlayer()
-		else:
-			if(memeAux == 0):
+					rotatePlayer("CW", (-cwPivot.position).angle())
+		elif event.is_action_pressed("ui_down"):
+			if(isShiftHeld):
+				rotationState = 2
+				changeStickyDirection()
+			else:
 				if(rotationState == 1):
-					memeAux = 16
-					point = cwPivot.global_position
-					rotation_around_point = (-cwPivot.position).angle()
-					memes = 1
+					rotatePlayer("CW", (-cwPivot.position).angle())
 				elif(rotationState == 3):
-					memeAux = 16
-					point = ccwPivot.global_position
-					rotation_around_point = (+ccwPivot.position).angle()
-					memes = -1
+					rotatePlayer("CCW", (+ccwPivot.position).angle())
+	
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -129,7 +118,7 @@ func _ready():
 	global_position = Vector2i(64*9+32, 64*7+32)
 	
 	rotationState = 2
-	rotatePlayer()
+	changeStickyDirection()
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(_delta):
@@ -145,6 +134,7 @@ func _process(_delta):
 		global_position += Vector2(sin(rotation_around_point), 
 			cos(rotation_around_point)) * sqrt(32*32+32*32)
 		spriteBox.rotation -= (PI/2)/16 *memes
+	
 
 
 
