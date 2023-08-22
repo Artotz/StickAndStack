@@ -11,28 +11,33 @@ var memeAux = 0
 
 var spriteBox
 var spriteSticky
-var redPivotSprite
-var	bluePivotSprite
+var Pivot1Sprite
+var Pivot2Sprite
+var Pivot3Sprite
+var Pivot4Sprite
+
+var ccwPivot
+var cwPivot
 
 func rotatePlayer():
 	spriteSticky.rotation = (rotationState*PI/2)
 	
 	if(rotationState == 0):
-		redPivotSprite.global_position = Vector2(global_position.x-32, global_position.y-32)
-		bluePivotSprite.global_position = Vector2(global_position.x+32, global_position.y-32)
-		
+		ccwPivot = Pivot1Sprite
+		cwPivot = Pivot2Sprite
+	
 	elif(rotationState == 1):
-		redPivotSprite.global_position = Vector2(global_position.x+32, global_position.y-32)
-		bluePivotSprite.global_position = Vector2(global_position.x+32, global_position.y+32)
-		
+		ccwPivot = Pivot2Sprite
+		cwPivot = Pivot4Sprite
+	
 	elif(rotationState == 2):
-		redPivotSprite.global_position = Vector2(global_position.x+32, global_position.y+32)
-		bluePivotSprite.global_position = Vector2(global_position.x-32, global_position.y+32)
-		
+		ccwPivot = Pivot4Sprite
+		cwPivot = Pivot3Sprite
+	
 	elif(rotationState == 3):
-		redPivotSprite.global_position = Vector2(global_position.x-32, global_position.y+32)
-		bluePivotSprite.global_position = Vector2(global_position.x-32, global_position.y-32)
-
+		ccwPivot = Pivot3Sprite
+		cwPivot = Pivot1Sprite
+	
 func setPivots():
 	pass
 
@@ -54,13 +59,13 @@ func _input(event):
 			if(memeAux == 0):
 				if(rotationState == 2):
 					memeAux = 16
-					point = bluePivotSprite.global_position
-					rotation_around_point = (+bluePivotSprite.position).angle()
+					point = cwPivot.global_position
+					rotation_around_point = (+cwPivot.position).angle()
 					memes = 1
 				elif(rotationState == 0):
 					memeAux = 16
-					point = redPivotSprite.global_position
-					rotation_around_point = (-redPivotSprite.position).angle()
+					point = ccwPivot.global_position
+					rotation_around_point = (-ccwPivot.position).angle()
 					memes = -1
 	elif event.is_action_pressed("ui_right"):
 		if(isShiftHeld):
@@ -70,13 +75,13 @@ func _input(event):
 			if(memeAux == 0):
 				if(rotationState == 2):
 					memeAux = 16
-					point = redPivotSprite.global_position
-					rotation_around_point = (-redPivotSprite.position).angle()
+					point = ccwPivot.global_position
+					rotation_around_point = (-ccwPivot.position).angle()
 					memes = -1
 				elif(rotationState == 0):
 					memeAux = 16
-					point = bluePivotSprite.global_position
-					rotation_around_point = (+bluePivotSprite.position).angle()
+					point = cwPivot.global_position
+					rotation_around_point = (+cwPivot.position).angle()
 					memes = 1
 	elif event.is_action_pressed("ui_up"):
 		if(isShiftHeld):
@@ -86,13 +91,13 @@ func _input(event):
 			if(memeAux == 0):
 				if(rotationState == 1):
 					memeAux = 16
-					point = redPivotSprite.global_position
-					rotation_around_point = (+redPivotSprite.position).angle()
+					point = ccwPivot.global_position
+					rotation_around_point = (+ccwPivot.position).angle()
 					memes = -1
 				elif(rotationState == 3):
 					memeAux = 16
-					point = bluePivotSprite.global_position
-					rotation_around_point = (-bluePivotSprite.position).angle()
+					point = cwPivot.global_position
+					rotation_around_point = (-cwPivot.position).angle()
 					memes = 1
 	elif event.is_action_pressed("ui_down"):
 		if(isShiftHeld):
@@ -102,13 +107,13 @@ func _input(event):
 			if(memeAux == 0):
 				if(rotationState == 1):
 					memeAux = 16
-					point = bluePivotSprite.global_position
-					rotation_around_point = (-bluePivotSprite.position).angle()
+					point = cwPivot.global_position
+					rotation_around_point = (-cwPivot.position).angle()
 					memes = 1
 				elif(rotationState == 3):
 					memeAux = 16
-					point = redPivotSprite.global_position
-					rotation_around_point = (+redPivotSprite.position).angle()
+					point = ccwPivot.global_position
+					rotation_around_point = (+ccwPivot.position).angle()
 					memes = -1
 
 # Called when the node enters the scene tree for the first time.
@@ -116,8 +121,10 @@ func _ready():
 	spriteBox = get_node("Sprite")
 	spriteSticky = get_node("Sprite2")
 	
-	redPivotSprite = get_node("Sprite3")
-	bluePivotSprite = get_node("Sprite4")
+	Pivot1Sprite = get_node("Pivots/Pivot1")
+	Pivot2Sprite = get_node("Pivots/Pivot2")
+	Pivot3Sprite = get_node("Pivots/Pivot3")
+	Pivot4Sprite = get_node("Pivots/Pivot4")
 	
 	global_position = Vector2i(64*9+32, 64*7+32)
 	
@@ -138,7 +145,6 @@ func _process(_delta):
 		global_position += Vector2(sin(rotation_around_point), 
 			cos(rotation_around_point)) * sqrt(32*32+32*32)
 		spriteBox.rotation -= (PI/2)/16 *memes
-	
 
 
 
