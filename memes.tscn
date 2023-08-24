@@ -58,16 +58,16 @@ shape = SubResource("RectangleShape2D_rncpf")
 [node name="Pivots" type="Node2D" parent="Player"]
 
 [node name="Pivot1" type="Sprite2D" parent="Player/Pivots"]
-modulate = Color(0, 1, 0, 1)
+modulate = Color(1, 1, 0, 1)
 z_index = 1
-position = Vector2(-32, -32)
+position = Vector2(32, -32)
 scale = Vector2(0.2, 0.2)
 texture = ExtResource("1_k2pe2")
 
 [node name="Pivot2" type="Sprite2D" parent="Player/Pivots"]
-modulate = Color(1, 1, 0, 1)
+modulate = Color(0, 0, 1, 1)
 z_index = 1
-position = Vector2(32, -32)
+position = Vector2(32, 32)
 scale = Vector2(0.2, 0.2)
 texture = ExtResource("1_k2pe2")
 
@@ -79,9 +79,9 @@ scale = Vector2(0.2, 0.2)
 texture = ExtResource("1_k2pe2")
 
 [node name="Pivot4" type="Sprite2D" parent="Player/Pivots"]
-modulate = Color(0, 0, 1, 1)
+modulate = Color(0, 1, 0, 1)
 z_index = 1
-position = Vector2(32, 32)
+position = Vector2(-32, -32)
 scale = Vector2(0.2, 0.2)
 texture = ExtResource("1_k2pe2")
 
